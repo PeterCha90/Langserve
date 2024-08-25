@@ -2,8 +2,7 @@
 
 ### Codes from
 
-- [Teddynote](https://github.com/teddylee777/langserve_ollama). 여기에 RAG를 적용한 Langchain을 호출할 수 있게 API만 추
-  가한 예제입니다!
+- [Teddynote](https://github.com/teddylee777/langserve_ollama). 여기에 RAG를 적용한 Langchain을 호출할 수 있게 API만 추가한 예제입니다!
 
 ### License
 
