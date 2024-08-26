@@ -40,11 +40,11 @@
 4. Create model & run it
   * Create LLM model
      ```
-     ollama create EEVE-Korean-10.8B -f EEVE-Korean-Instruct-10.8B-v1.0-GGUF/Modelfile
+     ollama create PETER -f EEVE-Korean-Instruct-10.8B-v1.0-GGUF/Modelfile
      ```
   * Run the Model.
     ```
-    ollama run EEVE-Korean-10.8B:latest
+    ollama run PETER:latest
     ```
 
   * After moving into the `app/` directory, run the server.
