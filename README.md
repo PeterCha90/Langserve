@@ -1,9 +1,56 @@
 ## 한국어 LLM Langserve + RAG API Example
 
 ### Codes from
-
 - [Teddynote](https://github.com/teddylee777/langserve_ollama). 여기에 RAG를 적용한 Langchain을 호출할 수 있게 API만 추가한 예제입니다!
 
+### How to use
+1. git clone this repository.
+2. install all requirements
+    ```bash
+    pip install -r requirements
+    pip install huggingface-hub
+    
+    ```
+  - install ollama <br/>
+    `Linux`: `curl -fsSL https://ollama.com/install.sh | sh` <br/>
+    `others`: [Download Link](https://ollama.com/download/mac)
+  
+  - download LLM model to `ollama-modelfile/EEVE-Korean-Instruct-10.8B-v1.0`
+    ```
+    huggingface-cli download \
+      heegyu/EEVE-Korean-Instruct-10.8B-v1.0-GGUF \
+      ggml-model-Q5_K_M.gguf \
+      --local-dir path_to_ollama-modelfile/EEVE-Korean-Instruct-10.8B-v1.0 \   // You should replace here with proper path.
+      --local-dir-use-symlinks False
+    ```
+3. Check Modelfile at ollama-modelfile/EEVE-Korean-Instruct-10.8B-v1.0/Modelfile whether look like following or not.
+    ```
+    FROM ggml-model-Q5_K_M.gguf
+  
+    TEMPLATE """{{- if .System }}
+    <s>{{ .System }}</s>
+    {{- end }}
+    <s>Human:
+    {{ .Prompt }}</s>
+    <s>Assistant:
+    """
+    ...
+    ```
+
+4. Create model & run it
+  * Create LLM model
+     ```
+     ollama create EEVE-Korean-10.8B -f EEVE-Korean-Instruct-10.8B-v1.0-GGUF/Modelfile
+     ```
+  * Run the Model.
+    ```
+    ollama run EEVE-Korean-10.8B:latest
+    ```
+
+  * After moving into the `app/` directory, run the server.
+    ```
+    python server.py
+    ```
 ### License
 
 - 소스코드를 활용하실 때는 반드시 출처를 표기해 주시기 바랍니다.
