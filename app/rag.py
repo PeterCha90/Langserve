@@ -26,7 +26,7 @@ if not os.path.exists(".cache/files"):
 
 
 def embed_file():
-    filename = "new_product_csv_info.csv"
+    filename = "new_products_data.csv"
     with open(f"./files/{filename}", "rb") as f:
         file_content = f.read()
 
