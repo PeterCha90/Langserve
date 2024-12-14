@@ -12,6 +12,11 @@
    ```bash
    pip install -r requirements
    ```
+3. IF you use Mac OS, run
+
+```
+brew install libmagic poppler tesseract
+```
 
 - install ollama <br/> `Linux`: `curl -fsSL https://ollama.com/install.sh | sh` <br/> `others`:
   [Download Link](https://ollama.com/download/mac)
