@@ -1,20 +1,20 @@
 import os
 
+from langchain_ollama import ChatOllama
 from langchain.storage import LocalFileStore
+from langchain_unstructured import UnstructuredLoader
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.embeddings import CacheBackedEmbeddings
-from langchain_community.chat_models import ChatOllama
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.runnables import RunnablePassthrough
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_core.output_parsers import StrOutputParser
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-# from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
-from langchain_unstructured import UnstructuredLoader
-from langchain_huggingface import HuggingFaceEmbeddings
+
 USE_BGE_EMBEDDING = True
 
 # LangChain이 지원하는 다른 채팅 모델을 사용합니다. 여기서는 Ollama를 사용합니다.
-llm = ChatOllama(model="PETER:latest")
+llm = ChatOllama(model="EEVE-10.8B:5Q")
 
 # 필수 디렉토리 생성 @Mineru
 if not os.path.exists(".cache"):
@@ -26,7 +26,7 @@ if not os.path.exists(".cache/files"):
 
 
 def embed_file():
-    filename = "new_products_data.csv"
+    filename = "travel-guide-southeast-asia.pdf"
     with open(f"./files/{filename}", "rb") as f:
         file_content = f.read()
 
@@ -36,6 +36,8 @@ def embed_file():
 
     cache_dir = LocalFileStore(f"./.cache/embeddings/{filename}/")
 
+    print("*********"*8)
+    print("Embedding Starts...")
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=500,
         chunk_overlap=50,
@@ -45,18 +47,17 @@ def embed_file():
     loader = UnstructuredLoader(file_path)
     docs = loader.load_and_split(
         text_splitter=text_splitter)
-    print("*********"*8)
-    print("Embedding Starts...")
+    # docs = loader.load()
 
     # BGE Embedding: @Mineru
-    model_name = "BAAI/bge-m3"
+    model_name = "all-MiniLM-L6-v2"
     # GPU Device 설정:
     # - NVidia GPU: "cuda"
     # - Mac M1, M2, M3: "mps"
     # - CPU: "cpu"
     model_kwargs = {
-        "device": "cuda"
-        # "device": "mps"
+        # "device": "cuda"
+        "device": "mps"
         # "device": "cpu"
     }
     encode_kwargs = {"normalize_embeddings": True}
@@ -66,9 +67,13 @@ def embed_file():
         encode_kwargs=encode_kwargs,
     )
     cached_embeddings = CacheBackedEmbeddings.from_bytes_store(
-        embeddings, cache_dir)
+        embeddings,
+        cache_dir,
+        namespace=embeddings.model_name
+    )
+
     print("...")
-    vectorstore = FAISS.from_documents(docs, embedding=cached_embeddings)
+    vectorstore = FAISS.from_documents(docs, cached_embeddings)
     vector_retriever = vectorstore.as_retriever()
 
     print("Embedding is Done!")

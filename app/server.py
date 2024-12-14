@@ -9,7 +9,7 @@ from xionic import chain as xionic_chain
 from translator import chain as EN_TO_KO_chain
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
-from langserve.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
 
