@@ -1,6 +1,9 @@
 .cache/
 **/__pycache__/**
-
+.omc
 *.DS_Store
 *.pyc
 *.gguf
+.claude
+.venv
+.env

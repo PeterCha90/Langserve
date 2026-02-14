@@ -1,13 +1,13 @@
 import os
 
 from langchain_ollama import ChatOllama
-from langchain.storage import LocalFileStore
+from langchain_classic.storage import LocalFileStore
 from langchain_unstructured import UnstructuredLoader
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.embeddings import CacheBackedEmbeddings
+from langchain_classic.embeddings import CacheBackedEmbeddings
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.runnables import RunnablePassthrough
-from langchain_community.vectorstores.faiss import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
@@ -17,12 +17,9 @@ USE_BGE_EMBEDDING = True
 llm = ChatOllama(model="EEVE-10.8B:5Q")
 
 # 필수 디렉토리 생성 @Mineru
-if not os.path.exists(".cache"):
-    os.mkdir(".cache")
-if not os.path.exists(".cache/embeddings"):
-    os.mkdir(".cache/embeddings")
-if not os.path.exists(".cache/files"):
-    os.mkdir(".cache/files")
+os.makedirs(".cache", exist_ok=True)
+os.makedirs(".cache/embeddings", exist_ok=True)
+os.makedirs(".cache/files", exist_ok=True)
 
 
 def embed_file():

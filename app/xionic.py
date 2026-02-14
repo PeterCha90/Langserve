@@ -1,12 +1,15 @@
+import os
+from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
 
+load_dotenv()
 
 llm = ChatOpenAI(
-    base_url="http://sionic.chat:8001/v1",
-    api_key="934c4bbc-c384-4bea-af82-1450d7f8128d",
-    model="xionic-ko-llama-3-70b",
+    base_url=os.getenv("XIONIC_BASE_URL", "http://sionic.chat:8001/v1"),
+    api_key=os.getenv("XIONIC_API_KEY", "your-api-key-here"),
+    model=os.getenv("XIONIC_MODEL", "xionic-ko-llama-3-70b"),
 )
 
 # Prompt 설정
